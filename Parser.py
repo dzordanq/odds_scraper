@@ -14,6 +14,8 @@ class Parser:
                 market_name = 'goalsTotal'
             elif english_label[0] == 'Total Corners':
                 market_name = 'cornersTotal'
+            elif english_label[0] == 'Total Shots':
+                market_name = 'shotsTotal'
             
 
             if self.home_team == english_label[1]:
