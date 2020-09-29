@@ -19,6 +19,7 @@ for competition in COMPETITIONS:
             'awayName' : event['event']['awayName'],
             'date' : event['event']['start'].split('T')[0],
             'hour' : event['event']['start'].split('T')[1].replace('Z',''),
+            'competition': competition,
             'markets' : {}
         }
         if days_diffrence(match_info['date']) <= 2:
