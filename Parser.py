@@ -8,20 +8,36 @@ class Parser:
 
     def parse_bet_offer(self, bet_offer):
         english_label = bet_offer['criterion']['englishLabel']
-        if 'by' in english_label:
-            english_label = english_label.split(' by ')
-            if english_label[0] == 'Total Goals':
-                market_name = 'goalsTotal'
-            elif english_label[0] == 'Total Corners':
+        if ' by ' in english_label or ' - ' in english_label:
+            if ' by ' in english_label:
+                english_label = english_label.split(' by ')
+            elif ' - ' in english_label:
+                english_label = english_label.split(' - ')
+
+            if english_label[0] == 'Total Corners':
                 market_name = 'cornersTotal'
+            elif english_label[0] == 'Total Offsides':
+                market_name = 'offsidesTotal'
+            elif english_label[0] == 'Total Cards':
+                market_name = 'cardsTotal'
+            elif english_label[0] == 'Total Fouls committed':
+                market_name = 'foulsTotal'
             elif english_label[0] == 'Total Shots':
                 market_name = 'shotsTotal'
-            
+            elif english_label[0] == 'Total Shots on Target':
+                market_name = 'shotsTotal'
+            elif english_label[0] == 'Total Ball possession (%)':   
+                market_name = 'ballPossesionTotal'
+                
 
             if self.home_team == english_label[1]:
                 market_name += 'HomeTeam'
             elif self.away_team == english_label[1]:
                 market_name += 'AwayTeam'
+            elif english_label[1] == 'Away Team':
+                market_name += 'AwayTeam'
+            elif english_label[1] == 'Home Team':
+                market_name += 'HomeTeam'
             else:
                 home_team_ratio = SequenceMatcher(a=self.home_team,b=english_label[1]).ratio()
                 away_team_ratio = SequenceMatcher(a=self.away_team,b=english_label[1]).ratio()
