@@ -3,7 +3,7 @@ import requests
 class Unibet:
     def __init__(self):
         self.headers = {
-            'authority': 'pl.unibet-27.com',
+            'authority': 'pl.unibet-28.com',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36',
             'accept': '*/*',
             'sec-fetch-site': 'same-origin',
