@@ -3,22 +3,24 @@ from Unibet import Unibet
 from DEFINITIONS import COMPETITIONS, MARKETS
 from MarketsFilter import MarketFilter
 from Parser import Parser
-from functions import days_diffrence
+from functions import days_diffrence, convert_utc_to_local
+from datetime import datetime
 import time
 
 start_time = time.time()
-
+local_timezone = datetime.now().astimezone().tzinfo
 unibet = Unibet()
 matches = []
 for competition in COMPETITIONS:
     response = unibet.get_competition(COMPETITIONS[competition])
     events = response['layout']['sections'][1]['widgets'][0]['matches']['events']
     for event in events:
+        date, hour = convert_utc_to_local(local_timezone, event['event']['start'])
         match_info = {
             'homeName' : event['event']['homeName'],
             'awayName' : event['event']['awayName'],
-            'date' : event['event']['start'].split('T')[0],
-            'hour' : event['event']['start'].split('T')[1].replace('Z',''),
+            'date' : date,
+            'hour' : hour,
             'competition': competition,
             'markets' : {}
         }
