@@ -1,4 +1,8 @@
+import json
+
 import requests
+from kafka import KafkaProducer
+
 from Unibet import Unibet
 from DEFINITIONS import COMPETITIONS, MARKETS
 from MarketsFilter import MarketFilter
@@ -50,8 +54,12 @@ for competition in COMPETITIONS:
                         match_info['markets'][market_name].append(outcome_dict)
 
             # Kafka producer here
-            matches.append(match_info)
+            # matches.append(match_info)
+            producer = KafkaProducer(bootstrap_servers='94.177.203.215:9092',
+                                     value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+            producer.send('unibet_topic', match_info)
+            producer.flush()
 
-print(time.time() - start_time)
-print()
+# print(time.time() - start_time)
+# print(json.dumps(matches))
 
