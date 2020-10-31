@@ -38,13 +38,20 @@ class Parser:
                 market_name += 'AwayTeam'
             elif english_label[1] == 'Home Team':
                 market_name += 'HomeTeam'
+            elif english_label[1] == '2nd Half':
+                market_name += 'SecondHalf'
+            elif english_label[1] == '1st Half':
+                market_name += 'FirstHalf'
             else:
                 home_team_ratio = SequenceMatcher(a=self.home_team,b=english_label[1]).ratio()
                 away_team_ratio = SequenceMatcher(a=self.away_team,b=english_label[1]).ratio()
-                if home_team_ratio > away_team_ratio:
-                    market_name += 'HomeTeam'
+                if home_team_ratio > 0.70 or away_team_ratio > 0.70:
+                    if home_team_ratio > away_team_ratio:
+                        market_name += 'HomeTeam'
+                    else:
+                        market_name += 'AwayTeam'
                 else:
-                    market_name += 'AwayTeam'
+                    market_name = 'COS POSZLO NIE TAK PANIE JANIE'
         else:
             market_name = MARKETS[english_label]
         return market_name
