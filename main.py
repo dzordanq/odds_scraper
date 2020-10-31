@@ -31,7 +31,12 @@ for competition in COMPETITIONS:
         if days_diffrence(match_info['date']) <= 2 and event['event']['state'] == 'NOT_STARTED':
             parser = Parser(match_info)
             
-            event_details = unibet.get_event_details(event['mainBetOffer']['eventId'])
+            try:
+                event_id = event['mainBetOffer']['eventId']
+            except:
+                continue
+            event_details = unibet.get_event_details(event_id)
+
             try:
                 event_details = event_details.json()
             except:
