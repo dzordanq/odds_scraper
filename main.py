@@ -24,7 +24,7 @@ for competition in COMPETITIONS:
             'competition': competition,
             'markets' : {}
         }
-        if days_diffrence(match_info['date']) <= 2:
+        if days_diffrence(match_info['date']) <= 2 and event['event']['state'] == 'NOT_STARTED':
             parser = Parser(match_info)
             
             event_details = unibet.get_event_details(event['mainBetOffer']['eventId'])
@@ -40,7 +40,6 @@ for competition in COMPETITIONS:
             bet_offers = MarketFilter.FilterMarkets(event_details['betOffers'])
             for bet_offer in bet_offers:
                 market_name = parser.parse_bet_offer(bet_offer)
-
                 if not market_name in match_info['markets'].keys():
                     match_info['markets'][market_name] = []
                 
