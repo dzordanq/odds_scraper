@@ -11,7 +11,7 @@ COMPETITIONS = {
     'DENMARK_SUPERLIGA' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/denmark/superligaen/matches',
     'ENGLAND_CHAMPIONSHIP' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/england/the_championship/matches',
     'ENGLAND_PREMIER_LEAGUE' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/england/premier_league/matches',
-    'EUROPA_LEAGUE' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/europa_league_qual_/matches',
+    'EUROPA_LEAGUE' : 'https://pl.unibet-28.com/betting/sports/filter/football/europa_league/matches',
     'FINLAND_VEIKKAUSLIGA' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/finland/veikkausliiga/matches',
     # 'FRANCE_LIGUE_ONE' : '',
     'GERMANY_2_BUNDESLIGA' : 'https://pl.unibet-28.com/sportsbook-feeds/views/filter/football/germany/2__bundesliga/matches',
