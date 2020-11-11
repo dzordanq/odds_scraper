@@ -29,7 +29,7 @@ for competition in COMPETITIONS:
             'markets' : {}
         }
         if days_diffrence(match_info['date']) <= 2 and event['event']['state'] == 'NOT_STARTED':
-            parser = Parser(match_info)
+            parser = Parser(event)
             
             try:
                 event_id = event['mainBetOffer']['eventId']
