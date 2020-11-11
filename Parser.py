@@ -2,9 +2,11 @@ from DEFINITIONS import MARKETS
 from difflib import SequenceMatcher
 
 class Parser:
-    def __init__(self, match_info):
-        self.home_team = match_info['homeName']
-        self.away_team = match_info['awayName']
+    def __init__(self, event):
+        self.home_team = event['event']['homeName'],
+        self.away_team = event['event']['awayName'],
+        self.event_id = event['event']['id']
+
 
     def parse_bet_offer(self, bet_offer):
         english_label = bet_offer['criterion']['englishLabel']
@@ -60,6 +62,7 @@ class Parser:
     def parse_outcome(self, outcome):
         outcome_name = outcome['englishLabel']
         outcome_odd = outcome['odds'] / 1000
+        outcome_id = outcome['id']
         try:
             line = outcome['line'] / 1000
         except:
@@ -70,7 +73,8 @@ class Parser:
         
         outcome_dict = {
             'outcomeName': outcome_name,
-            'outcomeOdd': outcome_odd
+            'outcomeOdd': outcome_odd,
+            'outcomeId': f"{self.event_id}|{outcome_id}"
         }
 
         return outcome_dict
