@@ -3,8 +3,8 @@ from difflib import SequenceMatcher
 
 class Parser:
     def __init__(self, event):
-        self.home_team = event['event']['homeName'],
-        self.away_team = event['event']['awayName'],
+        self.home_team = event['event']['homeName']
+        self.away_team = event['event']['awayName']
         self.event_id = event['event']['id']
 
 
@@ -47,7 +47,7 @@ class Parser:
             else:
                 home_team_ratio = SequenceMatcher(a=self.home_team,b=english_label[1]).ratio()
                 away_team_ratio = SequenceMatcher(a=self.away_team,b=english_label[1]).ratio()
-                if home_team_ratio > 0.70 or away_team_ratio > 0.70:
+                if home_team_ratio > 0.50 or away_team_ratio > 0.50:
                     if home_team_ratio > away_team_ratio:
                         market_name += 'HomeTeam'
                     else:
