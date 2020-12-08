@@ -11,6 +11,9 @@ from functions import days_diffrence, convert_utc_to_local
 from datetime import datetime
 import time
 
+producer = KafkaProducer(bootstrap_servers='94.177.203.215:9092',
+                         value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+
 start_time = time.time()
 local_timezone = datetime.now().astimezone().tzinfo
 unibet = Unibet()
@@ -59,8 +62,6 @@ for competition in COMPETITIONS:
 
             # Kafka producer here
             # matches.append(match_info)
-            producer = KafkaProducer(bootstrap_servers='94.177.203.215:9092',
-                                     value_serializer=lambda v: json.dumps(v).encode('utf-8'))
             producer.send('unibet_topic', match_info)
             producer.flush()
 
