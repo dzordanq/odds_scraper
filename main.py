@@ -1,13 +1,11 @@
 import json
 
-import requests
 from kafka import KafkaProducer
 
 from Unibet import Unibet
 from DEFINITIONS import COMPETITIONS, MARKETS
-from MarketsFilter import MarketFilter
 from Parser import Parser
-from functions import days_diffrence, convert_utc_to_local
+from functions import days_diffrence, convert_utc_to_local, convert_utc_to_local_for_nba
 from datetime import datetime
 import time
 
@@ -17,12 +15,16 @@ producer = KafkaProducer(bootstrap_servers='94.177.203.215:9092',
 start_time = time.time()
 local_timezone = datetime.now().astimezone().tzinfo
 unibet = Unibet()
+parser = Parser()
 matches = []
 for competition in COMPETITIONS:
     response = unibet.get_competition(COMPETITIONS[competition])
-    events = response['layout']['sections'][1]['widgets'][0]['matches']['events']
-    for event in events:
-        date, hour = convert_utc_to_local(local_timezone, event['event']['start'])
+    events = parser.get_events(response, competition)
+    for event in events[1:]:
+        if competition == 'NBA':
+            date, hour = convert_utc_to_local_for_nba(local_timezone, event['event']['start'])
+        else:
+            date, hour = convert_utc_to_local(local_timezone, event['event']['start'])
         match_info = {
             'homeName' : event['event']['homeName'],
             'awayName' : event['event']['awayName'],
@@ -32,38 +34,28 @@ for competition in COMPETITIONS:
             'markets' : {}
         }
         if days_diffrence(match_info['date']) <= 2 and event['event']['state'] == 'NOT_STARTED':
-            parser = Parser(event)
-            
             try:
-                event_id = event['mainBetOffer']['eventId']
+                event_id = parser.get_event_id(event)
             except:
                 continue
             event_details = unibet.get_event_details(event_id)
 
-            try:
+            if event_details.headers['content-type'] == 'application/json':
                 event_details = event_details.json()
-            except:
+            else:
                 pause_time = int(event_details.headers['Retry-After'])
                 print(f'Too many requests, pausing for {pause_time}')
-                time.sleep(int(event_details.headers['Retry-After']))
-                event_details = unibet.get_event_details(event['mainBetOffer']['eventId'])
+                time.sleep(pause_time)
+                event_details = unibet.get_event_details(event_id)
                 event_details = event_details.json()
-
-            bet_offers = MarketFilter.FilterMarkets(event_details['betOffers'])
-            for bet_offer in bet_offers:
-                market_name = parser.parse_bet_offer(bet_offer)
-                if not market_name in match_info['markets'].keys():
-                    match_info['markets'][market_name] = []
-                
-                for outcome in bet_offer['outcomes']:
-                    if outcome['status'] == 'OPEN':
-                        outcome_dict = parser.parse_outcome(outcome)
-                        match_info['markets'][market_name].append(outcome_dict)
-
+            parser.set_event_info(event)
+            markets = parser.parse(event_details)
+            match_info['markets'] = markets
             # Kafka producer here
             # matches.append(match_info)
             producer.send('unibet_topic', match_info)
-            producer.flush()
+            # print(json.dumps(match_info))
+producer.flush()
 
 # print(time.time() - start_time)
 # print(json.dumps(matches))

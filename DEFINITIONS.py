@@ -45,10 +45,19 @@ COMPETITIONS = {
     # 'UEFA_NATIONS_LEAGUE' : 'https://pl.unibet-30.com/sportsbook-feeds/views/filter/football///matches',
     # 'USA_MLS' : 'https://pl.unibet-30.com/sportsbook-feeds/views/filter/football///matches',
     # 'EUROPEAN_CHAMPIONSHIP_WOMENS_HANDBALL': "https://eu-offering.kambicdn.org/offering/v2018/ub/listView/handball/european_championship__w_.json?lang=pl_PL&market=PL&client_id=2&channel_id=1"
+    'NBA': 'https://eu-offering.kambicdn.org/offering/v2018/ub/listView/basketball/nba.json?lang=pl_PL&market=PL&client_id=2&channel_id=1&ncid=1609510879167&useCombined=true'
+
 }
 
 MARKETS = {
+    # FOOTBALL
     'Penalty Kick awarded' : 'penaltyKick',
+    'Total Offsides': 'offsidesTotal',
+    'Total Shots': 'shotsTotal',
+    'Total Fouls committed' : 'totalFouls',
+    'Total Offsides' : 'offsidesTotal',
+    'Total Shots on Target' : 'shotsTotalOnTarget',
+    'Total Ball possession (%)': 'ballPossesionTotal',
     # Corners
     'Total Corners' : 'cornersTotal',
     'Corners 3-Way Handicap': 'cornersHandicapThreeWay',
@@ -56,8 +65,5 @@ MARKETS = {
     'Total Cards' : 'cardsTotal',
     'Red Card given' : 'redCard',
     'Cards 3-Way Handicap' : 'cardsHandicapThreeWay',
-    'Total Fouls committed' : 'totalFouls',
-    'Total Offsides' : 'offsidesTotal',
-    'Total Shots on Target' : 'shotsTotal'
 }
 
