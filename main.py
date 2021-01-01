@@ -1,12 +1,11 @@
 import json
 
-import requests
 from kafka import KafkaProducer
 
 from Unibet import Unibet
 from DEFINITIONS import COMPETITIONS, MARKETS
 from Parser import Parser
-from functions import days_diffrence, convert_utc_to_local
+from functions import days_diffrence, convert_utc_to_local, convert_utc_to_local_for_nba
 from datetime import datetime
 import time
 
@@ -22,7 +21,10 @@ for competition in COMPETITIONS:
     response = unibet.get_competition(COMPETITIONS[competition])
     events = parser.get_events(response, competition)
     for event in events[1:]:
-        date, hour = convert_utc_to_local(local_timezone, event['event']['start'])
+        if competition == 'NBA':
+            date, hour = convert_utc_to_local_for_nba(local_timezone, event['event']['start'])
+        else:
+            date, hour = convert_utc_to_local(local_timezone, event['event']['start'])
         match_info = {
             'homeName' : event['event']['homeName'],
             'awayName' : event['event']['awayName'],
@@ -52,7 +54,8 @@ for competition in COMPETITIONS:
             # Kafka producer here
             # matches.append(match_info)
             producer.send('unibet_topic', match_info)
-            producer.flush()
+            # print(json.dumps(match_info))
+producer.flush()
 
 # print(time.time() - start_time)
 # print(json.dumps(matches))
