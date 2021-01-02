@@ -20,7 +20,7 @@ matches = []
 for competition in COMPETITIONS:
     response = unibet.get_competition(COMPETITIONS[competition])
     events = parser.get_events(response, competition)
-    for event in events[1:]:
+    for event in events:
         if competition == 'NBA':
             date, hour = convert_utc_to_local_for_nba(local_timezone, event['event']['start'])
         else:

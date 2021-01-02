@@ -53,10 +53,9 @@ MARKETS = {
     # FOOTBALL
     'Penalty Kick awarded' : 'penaltyKick',
     'Total Offsides': 'offsidesTotal',
-    'Total Shots': 'shotsTotal',
     'Total Fouls committed' : 'totalFouls',
     'Total Offsides' : 'offsidesTotal',
-    'Total Shots on Target' : 'shotsTotalOnTarget',
+    'Total Shots on Target' : 'shotsTotal',
     'Total Ball possession (%)': 'ballPossesionTotal',
     # Corners
     'Total Corners' : 'cornersTotal',
