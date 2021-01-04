@@ -1,7 +1,4 @@
 import json
-
-from kafka import KafkaProducer
-
 from Unibet import Unibet
 from DEFINITIONS import COMPETITIONS, MARKETS
 from Parser import Parser
@@ -9,8 +6,6 @@ from functions import days_diffrence, convert_utc_to_local, convert_utc_to_local
 from datetime import datetime
 import time
 
-producer = KafkaProducer(bootstrap_servers='94.177.203.215:9092',
-                         value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
 start_time = time.time()
 local_timezone = datetime.now().astimezone().tzinfo
@@ -51,12 +46,7 @@ for competition in COMPETITIONS:
             parser.set_event_info(event)
             markets = parser.parse(event_details)
             match_info['markets'] = markets
-            # Kafka producer here
             # matches.append(match_info)
-            producer.send('unibet_topic', match_info)
-            # print(json.dumps(match_info))
-producer.flush()
+            # Kafka producer
 
-# print(time.time() - start_time)
-# print(json.dumps(matches))
 
